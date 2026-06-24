@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT-профессии будущего</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-card: rgba(10, 20, 40, 0.7);
+      --accent-cyan: #00e5ff;
+      --accent-blue: #2979ff;
+      --accent-deep: #0d47a1;
+      --accent-glow: rgba(0, 229, 255, 0.15);
+      --text-primary: #e0f7fa;
+      --text-secondary: #80cbc4;
+      --border-glow: rgba(0, 229, 255, 0.3);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(13, 71, 161, 0.3), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(0, 229, 255, 0.08), transparent),
+        radial-gradient(ellipse 40% 30% at 10% 60%, rgba(41, 121, 255, 0.06), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+      opacity: 0.15;
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    @keyframes scan {
+      0% { top: -4px; }
+      100% { top: 100vh; }
+    }
+
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--accent-cyan);
+      border-radius: 50%;
+      animation: float linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 80px 20px 40px;
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4)); }
+      50% { filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.8)); }
+    }
+
+    h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      letter-spacing: 1px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Table of Contents */
+    .toc {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      padding: 36px 40px;
+      margin: 40px 0 60px;
+      backdrop-filter: blur(12px);
+    }
+
+    .toc-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.1rem;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toc-title::before {
+      content: '';
+      width: 20px;
+      height: 2px;
+      background: var(--accent-cyan);
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+    }
+
+    .toc a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      transition: all 0.25s;
+      font-size: 0.92rem;
+    }
+
+    .toc a:hover {
+      background: var(--accent-glow);
+      color: var(--accent-cyan);
+    }
+
+    .toc-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.7rem;
+      color: var(--accent-blue);
+      opacity: 0.6;
+      min-width: 22px;
+    }
+
+    .toc-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.7;
+    }
+
+    /* Profession Sections */
+    .profession {
+      position: relative;
+      margin-bottom: 70px;
+      padding: 40px;
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 229, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.4s, box-shadow 0.4s;
+    }
+
+    .profession:hover {
+      border-color: var(--border-glow);
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.06);
+    }
+
+    .profession::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 40px;
+      right: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+      opacity: 0.3;
+    }
+
+    .profession-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .profession-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+    }
+
+    .profession h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: 1px;
+    }
+
+    .profession-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(41, 121, 255, 0.12);
+      color: var(--accent-blue);
+      border: 1px solid rgba(41, 121, 255, 0.2);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .profession p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .profession p strong {
+      color: var(--text-primary);
+    }
+
+    .key-skills {
+      margin-top: 20px;
+    }
+
+    .key-skills h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(0, 229, 255, 0.06);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: var(--text-primary);
+    }
+
+    .skill-chip svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Divider */
+    .section-divider {
+      text-align: center;
+      margin: 60px 0;
+      position: relative;
+    }
+
+    .section-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+    }
+
+    .section-divider span {
+      position: relative;
+      background: var(--bg-primary);
+      padding: 0 20px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      color: var(--accent-cyan);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 60px 20px 40px;
+      border-top: 1px solid rgba(0, 229, 255, 0.08);
+      margin-top: 40px;
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      color: rgba(224, 247, 250, 0.3);
+      letter-spacing: 2px;
+      font-family: 'Orbitron', monospace;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .profession { padding: 24px 18px; }
+      .toc { padding: 24px 20px; }
+      .toc-grid { grid-template-columns: 1fr; }
+      header { padding: 50px 16px 30px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+<div class="particles" id="particles"></div>
+
+<header>
+  <svg class="logo-icon" viewBox="0 0 80 80" fill="none">
+    <rect x="2" y="2" width="76" height="76" rx="16" stroke="url(#hg1)" stroke-width="2"/>
+    <path d="M24 52V28l16 12-16 12z" fill="#00e5ff" opacity="0.8"/>
+    <path d="M40 52V28l16 12-16 12z" fill="#2979ff" opacity="0.6"/>
+    <circle cx="62" cy="28" r="4" fill="#00e5ff"/>
+    <circle cx="62" cy="40" r="3" fill="#2979ff" opacity="0.6"/>
+    <circle cx="62" cy="52" r="2" fill="#00e5ff" opacity="0.3"/>
+    <defs>
+      <linearGradient id="hg1" x1="0" y1="0" x2="80" y2="80">
+        <stop stop-color="#00e5ff"/>
+        <stop offset="1" stop-color="#2979ff"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <h1>IT-профессии 2026</h1>
+  <p class="subtitle">Руководство по самым востребованным и перспективным карьерным путям в мире технологий</p>
+</header>
+
+<div class="container">
+
+  <!-- Table of Contents -->
+  <nav class="toc">
+    <div class="toc-title">Навигация</div>
+    <div class="toc-grid">
+      <a href="#ai-ml">
+        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M16 14H8a6 6 0 0 0-6 6v0h20v0a6 6 0 0 0-6-6z"/><circle cx="19" cy="5" r="3"/></svg>
+        <span><span class="toc-num">01</span> AI / ML Engineer</span>
+      </a>
+      <a href="#platform-eng">
+        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span><span class="toc-num">02</span> Platform Engineer</span>
+      </a>
+      <a href="#cybersec">
+        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><path d="M12 2l8 4v6c0 5.25-3.5 9.74-8 11-4.5-1.26-8-5.75-8-11V6l8-4z"/></svg>
+        <span><span class="toc-num">03</span> Cybersecurity Engineer</span>
+      </a>
+      <a href="#cloud-arch">
+        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+        <span><span class="toc-num">04</span> Cloud Architect</span>
+      </a>
+      <a href="#data-eng">
+        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <span><span class="toc-num">05</span> Data Engineer</span>
+      </a>
+      <a href="#fullstack">
+        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
+        <span><span class="toc-num">06</span> Full-Stack Developer</span>
+      </a>
+      <a href="#product">
+        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span><span class="toc-num">07</span> Product Manager (Tech)</span>
+      </a>
+      <a href="#ai-solutions">
+        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span><span class="toc-num">08</span> AI Solutions Architect</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="section-divider"><span>// professions</span></div>
+
+  <!-- 01 AI/ML Engineer -->
+  <section class="profession" id="ai-ml">
+    <div class="profession-header">
+      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="url(#ai1)"/>
+        <path d="M14 32V16l10 8-10 8z" fill="#fff" opacity="0.9"/>
+        <path d="M24 32V16l10 8-10 8z" fill="#fff" opacity="0.5"/>
+        <circle cx="38" cy="14" r="3" fill="#fff" opacity="0.7"/>
+        <defs><linearGradient id="ai1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#0d47a1"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
+      </svg>
+      <h2>AI / ML Engineer</h2>
+    </div>
+    <div class="profession-tags">
+      <span class="tag">Машинное обучение</span>
+      <span class="tag">Нейросети</span>
+      <span class="tag">LLM</span>
+      <span class="tag">MLOps</span>
+    </div>
+    <p>
+      Инженеры AI/ML проектируют и обучают модели, которые решают реальные бизнес-задачи — от генерации контента до автономных систем принятия решений. В 2026 году фокус сместился с классического ML на <strong>оркестрацию агентных систем</strong>: модели не просто предсказывают, а действуют — вызывают инструменты, планируют цепочки действий и взаимодействуют с другими агентами. Ключевое отличие от прошлых лет — необходимость глубокого понимания не только математики, но и <strong>продуктового мышления</strong>: инженер должен знать, зачем модель существует и как она монетизируется.
+    </p>
+    <p>
+      Рынок взрывообразно растёт: по данным McKinsey, к 2026 году 40% рабочих задач в развитых странах будут автоматизированы с помощью AI. Средняя зарплата в США превышает $180K, а в Европе стартует от €90K. Востребованы специалисты, которые умеют не только обучать модели, но и <strong>оптимизировать их инференс</strong> — доу Quantization, Distillation, Pruning.
+    </p>
+    <div class="key-skills">
+      <h3>Ключевые навыки</h3>
+      <div class="skill-list">
+        <span class="skill-chip">Python / PyTorch / JAX</span>
+        <span class="skill-chip">Transformers & LLM fine-tuning</span>
+        <span class="skill-chip">RAG & Vector DB</span>
+        <span class="skill-chip">MLOps (MLflow, Kubeflow)</span>
+        <span class="skill-chip">Agentic frameworks (LangGraph, CrewAI)</span>
+        <span class="skill-chip">Distributed training</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Platform Engineer -->
+  <section class="profession" id="platform-eng">
+    <div class="profession-header">
+      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="url(#plat1)"/>
+        <rect x="8" y="12" width="32" height="20" rx="3" stroke="#fff" stroke-width="2" fill="none"/>
+        <circle cx="14" cy="18" r="2" fill="#fff"/>
+        <circle cx="20" cy="18" r="2" fill="#fff" opacity="0.6"/>
+        <line x1="8" y1="24" x2="40" y2="24" stroke="#fff" stroke-width="1" opacity="0.3"/>
+        <rect x="12" y="27" width="8" height="2" rx="1" fill="#fff" opacity="0.5"/>
+        <rect x="24" y="27" width="10" height="2" rx="1" fill="#fff" opacity="0.3"/>
+        <defs><linearGradient id="plat1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#1a237e"/><stop offset="1" stop-color="#2979ff"/></linearGradient></defs>
+      </svg>
+      <h2>Platform Engineer</h2>
+    </div>
+    <div class="profession-tags">
+      <span class="tag">Инженерия платформ</span>
+      <span class="tag">IDP</span>
+      <span class="tag">Kubernetes</span>
+      <span class="tag">Developer Experience</span>
+    </div>
+    <p>
+      Platform Engineer — это эволюция DevOps-инженера, сосредоточенная на создании <strong>внутренних платформ</strong> (Internal Developer Platforms), которые делают разработку безопасной, быстрой и предсказуемой. Вместо того чтобы каждый раз «изобретать велосипед» для деплоя, команда получает самосервисный портал с каталогом шаблонов, автоматизированными пайплайнами и встроенным мониторингом.
+    </p>
+    <p>
+      По данным Gartner, к 2026 году <strong>80% инженерных организаций</strong> создадут собственные платформы. Главный вызов — баланс между стандартизацией и свободой: платформа должна ускорять, а не ограничивать. Хороший Platform Engineer обладает глубоким пониманием developer experience (DX) и умением проектировать абстракции, которые <strong>не нуждаются в документации</strong> — они интуитивно понятны.
+    </p>
+    <div class="key-skills">
+      <h3>Ключевые навыки</h3>
+      <div class="skill-list">
+        <span class="skill-chip">Kubernetes / Helm / ArgoCD</span>
+        <span class="skill-chip">Terraform / Pulumi</span>
+        <span class="skill-chip">Backstage / Port / Humanitec</span>
+        <span class="skill-chip">GitOps</span>
+        <span class="skill-chip">Observability (OpenTelemetry)</span>
+        <span class="skill-chip">Platform-as-Product подход</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><span>// security & cloud</span></div>
+
+  <!-- 03 Cybersecurity Engineer -->
+  <section class="profession" id="cybersec">
+    <div class="profession-header">
+      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="url(#sec1)"/>
+        <path d="M24 6l14 7v9c0 10-6 18-14 21C18 40 12 32 12 22v-9l14-7z" stroke="#fff" stroke-width="2" fill="none"/>
+        <path d="M18 24l4 4 8-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><linearGradient id="sec1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#004d40"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
+      </svg>
+      <h2>Cybersecurity Engineer</h2>
+    </div>
+    <div class="profession-tags">
+      <span class="tag">Защита</span>
+      <span class="tag">Threat Intelligence</span>
+      <span class="tag">AI-безопасность</span>
+      <span class="tag">Zero Trust</span>
+    </div>
+    <p>
+      Кибербезопасность в 2026 году — это не только про файрволы и антивирусы. Главный тренд — <strong>защита AI-систем от атак</strong>: prompt injection, data poisoning, model extraction. Появилась целая подотрасль — AI Red Teaming, где специалисты атакуют собственные модели компании, чтобы найти уязвимости до злоумышленников. Другой фокус — <strong>Supply Chain Security</strong>: проверка зависимостей, контейнеров и open-source компонентов на скомпрометированные библиотеки.
+    </p>
+    <p>
+      Дефицит специалистов критический:ISC² сообщает о нехватке <strong>4.8 млн человек</strong> по всему миру. Средняя зарплата в США — $135K+, а специалисты по AI Security — $170K+. Работа требует постоянного обучения: атаки эволюционируют быстрее, чем防御ные системы. Ключевое качество — <strong>атакующее мышление</strong>: умение думать как злоумышленник.
+    </p>
+    <div class="key-skills">
+      <h3>Ключевые навыки</h3>
+      <div class="skill-list">
+        <span class="skill-chip">Network & App Security</span>
+        <span class="skill-chip">SIEM / SOAR</span>
+        <span class="skill-chip">AI Red Teaming</span>
+        <span class="skill-chip">Zero Trust Architecture</span>
+        <span class="skill-chip">Threat Modeling (STRIDE)</span>
+        <span class="skill-chip">DevSecOps Pipeline</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Cloud Architect -->
+  <section class="profession" id="cloud-arch">
+    <div class="profession-header">
+      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="url(#cloud1)"/>
+        <path d="M14 30h20a8 8 0 0 0 0-16h-1a10 10 0 0 0-19 5 6 6 0 0 0 0 11z" stroke="#fff" stroke-width="2" fill="none"/>
+        <circle cx="20" cy="22" r="1.5" fill="#fff"/>
+        <circle cx="26" cy="19" r="1.5" fill="#fff" opacity="0.7"/>
+        <circle cx="32" cy="22" r="1" fill="#fff" opacity="0.4"/>
+        <defs><linearGradient id="cloud1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#0d47a1"/><stop offset="1" stop-color="#00bcd4"/></linearGradient></defs>
+      </svg>
+      <h2>Cloud Architect</h2>
+    </div>
+    <div class="profession-tags">
+      <span class="tag">AWS / Azure / GCP</span>
+      <span class="tag">Мульти-клауд</span>
+      <span class="tag">FinOps</span>
+      <span class="tag">Well-Architected</span>
+    </div>
+    <p>
+      Cloud Architect проектирует архитектуру инфраструктуры с учётом масштабируемости, отказоустойчивости и <strong>оптимизации затрат</strong>. В 2026 году мульти-клауд стал стандартом, а не исключением: компании используют AWS для вычислений, GCP для AI/ML-сервисов и Azure для интеграции с корпоративными системами. Главная боль — <strong>FinOps</strong>: облака становятся дороже, и архитектор должен уметь прогнозировать и контролировать расходы.
+    </p>
+    <p>
+      Появились новые концепции: <strong>Sovereign Cloud</strong> (облака с суверенитетом данных для регуляторных требований), <strong>Edge-to-Cloud</strong> (обработка данных на edge с последующей синхронизацией) и <strong>AI-native Infrastructure</strong> (оптимизированная под GPU-кластеры и inference). Зарплата в США — от $160K, в Европе — от €100K.
+    </p>
+    <div class="key-skills">
+      <h3>Ключевые навыки</h3>
+      <div class="skill-list">
+        <span class="skill-chip">Multi-cloud strategy</span>
+        <span class="skill-chip">FinOps & Cost optimization</span>
+        <span class="skill-chip">Well-Architected Framework</span>
+        <span class="skill-chip">Disaster Recovery</span>
+        <span class="skill-chip">Network Architecture (VPC, Transit Gateway)</span>
+        <span class="skill-chip">GPU Clusters for AI workloads</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><span>// data & engineering</span></div>
+
+  <!-- 05 Data Engineer -->
+  <section class="profession" id="data-eng">
+    <div class="profession-header">
+      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="url(#data1)"/>
+        <ellipse cx="24" cy="14" rx="14" ry="5" stroke="#fff" stroke-width="2" fill="none"/>
+        <path d="M10 14v10c0 2.76 6.27 5 14 5s14-2.24 14-5V14" stroke="#fff" stroke-width="2" fill="none"/>
+        <path d="M10 24v10c0 2.76 6.27 5 14 5s14-2.24 14-5V24" stroke="#fff" stroke-width="2" fill="none"/>
+        <defs><linearGradient id="data1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#1b5e20"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
+      </svg>
+      <h2>Data Engineer</h2>
+    </div>
+    <div class="profession-tags">
+      <span class="tag">Пайплайны данных</span>
+      <span class="tag">Real-time</span>
+      <span class="tag">Data Mesh</span>
+      <span class="tag">Data Quality</span>
+    </div>
+    <p>
+      Data Engineer строит инфраструктуру, которая превращает сырые данные в <strong>надёжный аналитический актив</strong>. В 2026 году ключевой тренд — <strong>Data Products</strong>: данные перестали быть «побочным продуктом» и стали самостоятельными продуктами с SLA, документацией и потребителями. Data Mesh набирает обороты: decentralизация владения данными и доменная ориентированность.
+    </p>
+    <p>
+      Новым must-have стал <strong>Real-time Processing</strong>: компании больше не могут ждать ночных batch-процессов. Apache Kafka, Flink и Materialize стали стандартом. Кроме того, с ростом AI появился спрос на <strong>Feature Engineering</strong> — построение пайплайнов для генерации признаков моделей в реальном времени. Зарплата в США — от $145K, в Европе — от €80K.
+    </p>
+    <div class="key-skills">
+      <h3>Ключевые навыки</h3>
+      <div class="skill-list">
+        <span class="skill-chip">Spark / Flink / Beam</span>
+        <span class="skill-chip">Kafka / Pulsar</span>
+        <span class="skill-chip">dbt / SQL</span>
+        <span class="skill-chip">Data Modeling (Dimensional, Data Vault)</span>
+        <span class="skill-chip">Airflow / Dagster</span>
+        <span class="skill-chip">Data Quality (Great Expectations)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Full-Stack Developer -->
+  <section class="profession" id="fullstack">
+    <div class="profession-header">
+      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="url(#fs1)"/>
+        <polyline points="16 16 10 22 16 28" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <polyline points="32 16 38 22 32 28" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <line x1="28" y1="12" x2="20" y2="32" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+        <defs><linearGradient id="fs1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#4a148c"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
+      </svg>
+      <h2>Full-Stack Developer</h2>
+    </div>
+    <div class="profession-tags">
+      <span class="tag">Веб</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">AI-augmented</span>
+      <span class="tag">Edge Computing</span>
+    </div>
+    <p>
+      Full-Stack Developer в 2026 году — это не «мужик на всё», а <strong>специалист по быстрой доставке ценности</strong>. Главный тренд — AI-augmented разработка: Copilot, Cursor и подобные инструменты ускоряют написание кода в 3-5 раз, но создают новую проблему — <strong>понимание сгенерированного кода</strong>. Хороший full-stack теперь должен уметь критически оценивать AI-выводы и проектировать архитектуру, которую AI ещё не научился создавать.
+    </p>
+    <p>
+      Технологический стек стремительно сближается: Next.js / Nuxt для фронта, tRPC / Hono для API, Prisma / Drizzle для БД. <strong>Edge-first подход</strong> стал нормой: код выполняется ближе к пользователю (Cloudflare Workers, Vercel Edge Functions, Deno Deploy). Зарплата — от $120K в США, от €70K в Европе. Самые востребованные — те, кто умеет связывать AI-сервисы в единую архитектуру.
+    </p>
+    <div class="key-skills">
+      <h3>Ключевые навыки</h3>
+      <div class="skill-list">
+        <span class="skill-chip">React / Vue / Svelte</span>
+        <span class="skill-chip">Node.js / Bun / Deno</span>
+        <span class="skill-chip">TypeScript (strict mode)</span>
+        <span class="skill-chip">Edge Runtime</span>
+        <span class="skill-chip">AI API Integration</span>
+        <span class="skill-chip">Testing (Vitest, Playwright)</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><span>// strategy & leadership</span></div>
+
+  <!-- 07 Product Manager (Tech) -->
+  <section class="profession" id="product">
+    <div class="profession-header">
+      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="url(#pm1)"/>
+        <circle cx="24" cy="24" r="14" stroke="#fff" stroke-width="2" fill="none"/>
+        <path d="M24 14v10l7 4" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <circle cx="24" cy="24" r="3" fill="#fff" opacity="0.5"/>
+        <defs><linearGradient id="pm1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#e65100"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
+      </svg>
+      <h2>Product Manager (Tech)</h2>
+    </div>
+    <div class="profession-tags">
+      <span class="tag">Продукт</span>
+      <span class="tag">Стратегия</span>
+      <span class="tag">AI-продукты</span>
+      <span class="tag">Data-driven</span>
+    </div>
+    <p>
+      Технический Product Manager — это <strong>переводчик между бизнесом и инженерией</strong>, который принимает решения на основе данных, а не интуиции. В 2026 году главный навык — понимание AI: PM должен знать, что модели умеют и чего не умеют, чтобы ставить реалистичные задачи и избегать «AI-washing» продукта. Появилась новая роль — <strong>AI Product Manager</strong>, который специализируется на продуктах, где AI является ядром ценности, а не фичей.
+    </p>
+    <p>
+      Рынок PM растёт: по данным Productboard, 62% компаний увеличили количество PM-позиций за последний год. Ключевой вызов — <strong>принимать решения в условиях неопределённости</strong>: когда AI-модели обновляются каждый месяц, roadmap не может быть фиксированным на полгода. Зарплата в США — от $130K, в Европе — от €85K.
+    </p>
+    <div class="key-skills">
+      <h3>Ключевые навыки</h3>
+      <div class="skill-list">
+        <span class="skill-chip">Product Discovery (Jobs-to-be-Done)</span>
+        <span class="skill-chip">AI/ML Literacy</span>
+        <span class="skill-chip">Data Analytics (SQL, Amplitude)</span>
+        <span class="skill-chip">A/B Testing & Experimentation</span>
+        <span class="skill-chip">Roadmap & Prioritization frameworks</span>
+        <span class="skill-chip">Stakeholder Management</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 AI Solutions Architect -->
+  <section class="profession" id="ai-solutions">
+    <div class="profession-header">
+      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="url(#ais1)"/>
+        <polygon points="24 6 42 18 36 40 12 40 6 18" stroke="#fff" stroke-width="2" fill="none"/>
+        <circle cx="24" cy="24" r="6" stroke="#fff" stroke-width="1.5" fill="none"/>
+        <circle cx="24" cy="24" r="2" fill="#fff"/>
+        <line x1="24" y1="18" x2="24" y2="6" stroke="#fff" stroke-width="1" opacity="0.4"/>
+        <line x1="29" y1="27" x2="42" y2="18" stroke="#fff" stroke-width="1" opacity="0.4"/>
+        <line x1="19" y1="27" x2="6" y2="18" stroke="#fff" stroke-width="1" opacity="0.4"/>
+        <defs><linearGradient id="ais1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#880e4f"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
+      </svg>
+      <h2>AI Solutions Architect</h2>
+    </div>
+    <div class="profession-tags">
+      <span class="tag">Архитектура AI</span>
+      <span class="tag">Enterprise AI</span>
+      <span class="tag">LLM Ops</span>
+      <span class="tag">ROI</span>
+    </div>
+    <p>
+      AI Solutions Architect — это <strong>мост между возможностями AI и бизнес-задачами компании</strong>. Эта роль появилась потому, что 70% AI-проектов не доходят до продакшена: не из-за технологий, а из-за неправильной постановки задачи. Архитектор определяет, какую задачу можно решить с помощью AI, какую модель выбрать, как спроектировать систему, чтобы она была масштабируемой, и — самое важное — <strong>как измерить ROI</strong>.
+    </p>
+    <p>
+      В 2026 году главный тренд — <strong>AI-native Architecture</strong>: проектирование систем «с нуля» с учётом AI, а не «приклеивание» AI к существующим продуктам. Архитектор должен понимать и инфраструктуру (GPU-кластеры, inference serving), и данные (пайплайны, качество), и безопасность (compliance, responsible AI). Это одна из самых высокооплачиваемых ролей в IT: в США — от $190K, в Европе — от €120K.
+    </p>
+    <div class="key-skills">
+      <h3>Ключевые навыки</h3>
+      <div class="skill-list">
+        <span class="skill-chip">LLM & GenAI Architecture</span>
+        <span class="skill-chip">System Design (DDD, CQRS)</span>
+        <span class="skill-chip">Cloud + On-prem AI Infrastructure</span>
+        <span class="skill-chip">Responsible AI & Compliance</span>
+        <span class="skill-chip">Cost Modeling for AI workloads</span>
+        <span class="skill-chip">Stakeholder Communication</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>IT PROFESSIONS 2026 // CYAN TECH SERIES</p>
+</footer>
+
+<script>
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+    container.appendChild(p);
+  }
+</script>
+
+</body>
+</html>
