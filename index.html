@@ -1,780 +1,654 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IT-профессии будущего</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FullStack Developer — Профессия</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-    :root {
-      --bg-primary: #0a0e1a;
-      --bg-card: rgba(10, 20, 40, 0.7);
-      --accent-cyan: #00e5ff;
-      --accent-blue: #2979ff;
-      --accent-deep: #0d47a1;
-      --accent-glow: rgba(0, 229, 255, 0.15);
-      --text-primary: #e0f7fa;
-      --text-secondary: #80cbc4;
-      --border-glow: rgba(0, 229, 255, 0.3);
-    }
+:root{
+  --font-sans:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --font-mono:'Cascadia Code','Fira Code','JetBrains Mono',monospace;
+  --radius:14px;--radius-sm:10px;
+}
 
-    html { scroll-behavior: smooth; }
+/* ═══ DARK ═══ */
+[data-theme="dark"]{
+  --bg-0:#0c0e1a;--bg-1:#10132a;--bg-2:#161a36;
+  --surface:rgba(255,255,255,0.04);--surface-solid:#1a1e3a;
+  --surface-elevated:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.07);--border-glow:rgba(99,102,241,0.25);
+  --text:#eef0f6;--text-2:#9ca3c0;--text-3:#5e6488;
+  --accent:#7c83f7;--accent-2:#6366f1;--accent-3:#a78bfa;
+  --cyan:#38bdf8;--emerald:#34d399;--rose:#fb7185;--amber:#fbbf24;
+  --glow:rgba(99,102,241,0.12);--glow-strong:rgba(99,102,241,0.22);
+  --card-blur:blur(18px);--card-shadow:0 2px 24px rgba(0,0,0,0.35),0 0 0 1px rgba(255,255,255,0.04);
+  --hero-gradient:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(99,102,241,0.12),transparent 70%);
+}
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
+/* ═══ LIGHT ═══ */
+[data-theme="light"]{
+  --bg-0:#f3f4f8;--bg-1:#ebedf4;--bg-2:#e2e5ee;
+  --surface:rgba(255,255,255,0.65);--surface-solid:#ffffff;
+  --surface-elevated:rgba(255,255,255,0.85);
+  --border:rgba(0,0,0,0.07);--border-glow:rgba(99,102,241,0.2);
+  --text:#1a1d2e;--text-2:#555b78;--text-3:#8890a8;
+  --accent:#6366f1;--accent-2:#4f46e5;--accent-3:#7c3aed;
+  --cyan:#0ea5e9;--emerald:#10b981;--rose:#f43f5e;--amber:#f59e0b;
+  --glow:rgba(99,102,241,0.06);--glow-strong:rgba(99,102,241,0.1);
+  --card-blur:blur(16px);--card-shadow:0 2px 16px rgba(0,0,0,0.06),0 0 0 1px rgba(0,0,0,0.04);
+  --hero-gradient:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(99,102,241,0.06),transparent 70%);
+}
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(13, 71, 161, 0.3), transparent),
-        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(0, 229, 255, 0.08), transparent),
-        radial-gradient(ellipse 40% 30% at 10% 60%, rgba(41, 121, 255, 0.06), transparent);
-      pointer-events: none;
-      z-index: 0;
-    }
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);color:var(--text);background:var(--bg-0);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
 
-    .grid-bg {
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
+/* ─── BG ─── */
+.bg-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-grad{position:absolute;inset:0;background:var(--hero-gradient);transition:background .4s}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:56px 56px;opacity:.45}
+[data-theme="light"] .bg-grid{opacity:.25}
+.content{position:relative;z-index:1}
 
-    .scanline {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-      opacity: 0.15;
-      animation: scan 8s linear infinite;
-      pointer-events: none;
-      z-index: 100;
-    }
+/* ─── Container ─── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+.section{padding:88px 0}
 
-    @keyframes scan {
-      0% { top: -4px; }
-      100% { top: 100vh; }
-    }
+/* ─── Section headers ─── */
+.sec-label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sec-label::before{content:'';width:14px;height:1px;background:var(--accent)}
+.sec-title{font-size:clamp(1.5rem,4vw,2.3rem);font-weight:800;margin-bottom:14px;line-height:1.2}
+.sec-desc{color:var(--text-2);font-size:.92rem;max-width:620px}
 
-    .particles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
+/* ─── Glass Card ─── */
+.card{background:var(--surface-elevated);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:var(--card-blur);box-shadow:var(--card-shadow);transition:all .3s ease}
+.card:hover{border-color:var(--border-glow);box-shadow:var(--card-shadow),0 0 30px var(--glow)}
 
-    .particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: var(--accent-cyan);
-      border-radius: 50%;
-      animation: float linear infinite;
-      opacity: 0;
-    }
+/* ─── Anim ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.anim{opacity:0;transform:translateY(28px);transition:opacity .55s ease,transform .55s ease}.anim.vis{opacity:1;transform:translateY(0)}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes orbit{from{transform:rotate(0deg) translateX(56px) rotate(0deg)}to{transform:rotate(360deg) translateX(56px) rotate(-360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-    @keyframes float {
-      0% { transform: translateY(100vh); opacity: 0; }
-      10% { opacity: 0.6; }
-      90% { opacity: 0.6; }
-      100% { transform: translateY(-10vh); opacity: 0; }
-    }
+/* ═══════════════════════════════
+   NAV
+   ═══════════════════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:14px 0;background:color-mix(in srgb,var(--bg-0) 82%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:background .3s}
+nav .wrap{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--font-mono);font-weight:700;font-size:.88rem;color:var(--accent);letter-spacing:1px;display:flex;align-items:center;gap:8px}
+.nav-logo .led{width:7px;height:7px;border-radius:50%;background:var(--emerald);animation:pulse 2s infinite}
+.nav-links{display:flex;gap:22px;list-style:none;align-items:center}
+.nav-links a{color:var(--text-3);text-decoration:none;font-size:.78rem;letter-spacing:.4px;transition:color .25s;position:relative}
+.nav-links a:hover{color:var(--text)}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--accent);transition:width .25s}
+.nav-links a:hover::after{width:100%}
 
-    header {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 80px 20px 40px;
-    }
+/* Theme toggle */
+.theme-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;font-size:1rem;color:var(--text)}
+.theme-btn:hover{border-color:var(--accent);background:var(--glow)}
+.nav-burger{display:none;background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer;padding:4px}
 
-    .logo-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 24px;
-      animation: pulse-glow 3s ease-in-out infinite;
-    }
+@media(max-width:860px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;padding:20px 24px;background:color-mix(in srgb,var(--bg-0) 95%,transparent);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);gap:14px}
+  .nav-links.open{display:flex}
+  .nav-burger{display:block}
+}
 
-    @keyframes pulse-glow {
-      0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4)); }
-      50% { filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.8)); }
-    }
+/* ═══════════════════════════════
+   HERO
+   ═══════════════════════════════ */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:100px;position:relative;overflow:hidden}
+.hero-inner{max-width:640px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border:1px solid var(--border);border-radius:20px;font-size:.72rem;color:var(--text-2);margin-bottom:24px;background:var(--surface);backdrop-filter:blur(8px)}
+.hero-badge .live{width:6px;height:6px;background:var(--emerald);border-radius:50%;animation:pulse 1.5s infinite}
+.hero h1{font-size:clamp(2.2rem,6.5vw,4.2rem);font-weight:900;line-height:1.04;margin-bottom:18px;letter-spacing:-.5px}
+.hero h1 .gr{background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero>p,.hero-inner>p{color:var(--text-2);font-size:1rem;max-width:500px;margin-bottom:28px}
 
-    h1 {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(1.8rem, 5vw, 3.2rem);
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
+.hero-price{display:flex;gap:14px;margin-bottom:32px;flex-wrap:wrap}
+.hero-price .chip{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);font-size:.82rem;color:var(--text);transition:all .3s}
+.hero-price .chip:hover{border-color:var(--accent);background:var(--glow)}
+.hero-price .chip .val{font-family:var(--font-mono);font-weight:700;color:var(--accent)}
+.hero-price .chip .lbl{color:var(--text-3);font-size:.72rem}
 
-    .subtitle {
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      font-weight: 300;
-      letter-spacing: 1px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px}
+.btn{padding:11px 26px;border-radius:var(--radius-sm);font-size:.84rem;font-weight:600;cursor:pointer;border:none;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+.btn-fill{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:#fff;box-shadow:0 4px 18px var(--glow-strong)}
+.btn-fill:hover{transform:translateY(-2px);box-shadow:0 6px 24px var(--glow-strong)}
+.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--text-3);color:var(--text)}
 
-    .container {
-      position: relative;
-      z-index: 10;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+.hero-stats{display:flex;gap:36px;padding-top:28px;border-top:1px solid var(--border)}
+.hero-stat .v{font-size:1.5rem;font-weight:800;font-family:var(--font-mono);background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-stat .l{font-size:.72rem;color:var(--text-3);margin-top:2px}
 
-    /* Table of Contents */
-    .toc {
-      background: var(--bg-card);
-      border: 1px solid var(--border-glow);
-      border-radius: 16px;
-      padding: 36px 40px;
-      margin: 40px 0 60px;
-      backdrop-filter: blur(12px);
-    }
+/* Hero orbit decoration */
+.hero-orbit{position:absolute;right:-40px;top:50%;transform:translateY(-50%);width:380px;height:380px;pointer-events:none;z-index:0}
+.orb-ring{position:absolute;border:1px solid var(--border);border-radius:50%;opacity:.6}
+.orb-ring:nth-child(1){width:100%;height:100%;inset:0}
+.orb-ring:nth-child(2){width:68%;height:68%;top:16%;left:16%;border-color:var(--border-glow)}
+.orb-ring:nth-child(3){width:36%;height:36%;top:32%;left:32%}
+.orb-dot{position:absolute;width:8px;height:8px;border-radius:50%;top:50%;left:50%}
+.orb-dot:nth-child(4){background:var(--accent);box-shadow:0 0 16px var(--accent);animation:orbit 7s linear infinite}
+.orb-dot:nth-child(5){background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:orbit 11s linear infinite reverse;width:6px;height:6px}
+.orb-dot:nth-child(6){background:var(--emerald);box-shadow:0 0 10px var(--emerald);animation:orbit 15s linear infinite;width:5px;height:5px}
+@media(max-width:900px){.hero-orbit{display:none}}
 
-    .toc-title {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.1rem;
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+/* ═══════════════════════════════
+   BENTO 2-col layout
+   ═══════════════════════════════ */
+.bento{display:grid;gap:14px;margin-top:36px}
+.bento-2{grid-template-columns:1fr 1fr}
+.bento-3{grid-template-columns:repeat(3,1fr)}
+.bento-card{padding:26px;position:relative;overflow:hidden;min-height:180px;display:flex;flex-direction:column}
+.bento-card .b-tag{position:absolute;top:14px;right:14px;font-family:var(--font-mono);font-size:.58rem;padding:3px 8px;border-radius:4px;background:var(--glow);color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+.bento-card .b-icon{width:38px;height:38px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-bottom:14px;flex-shrink:0}
+.bento-card h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
+.bento-card p{color:var(--text-2);font-size:.86rem;line-height:1.7}
 
-    .toc-title::before {
-      content: '';
-      width: 20px;
-      height: 2px;
-      background: var(--accent-cyan);
-    }
+.ic-ind{background:rgba(99,102,241,.1);color:var(--accent)}
+.ic-cya{background:rgba(56,189,248,.1);color:var(--cyan)}
+.ic-eme{background:rgba(52,211,153,.1);color:var(--emerald)}
+.ic-ros{background:rgba(251,113,133,.1);color:var(--rose)}
+.ic-amb{background:rgba(251,191,36,.1);color:var(--amber)}
+.ic-pur{background:rgba(167,139,250,.1);color:var(--accent-3)}
 
-    .toc-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 10px;
-    }
+@media(max-width:700px){.bento-2,.bento-3{grid-template-columns:1fr}}
 
-    .toc a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      transition: all 0.25s;
-      font-size: 0.92rem;
-    }
+/* ═══════════════════════════════
+   TASKS
+   ═══════════════════════════════ */
+.tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:36px}
+.task{padding:22px;display:flex;gap:14px;align-items:flex-start}
+.task-n{font-family:var(--font-mono);font-size:.68rem;color:var(--accent);opacity:.45;min-width:18px;padding-top:2px}
+.task h3{font-size:.92rem;font-weight:700;margin-bottom:5px}
+.task p{color:var(--text-2);font-size:.83rem}
+@media(max-width:700px){.tasks{grid-template-columns:1fr}}
 
-    .toc a:hover {
-      background: var(--accent-glow);
-      color: var(--accent-cyan);
-    }
+/* ═══════════════════════════════
+   SKILLS
+   ═══════════════════════════════ */
+.sk-lbl{font-family:var(--font-mono);font-size:.63rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{padding:7px 14px;border-radius:8px;font-size:.8rem;border:1px solid var(--border);background:var(--surface);color:var(--text);transition:all .25s;cursor:default}
+.tag:hover{border-color:var(--accent);background:var(--glow);transform:translateY(-1px)}
+.tag .d{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.d-i{background:var(--accent)}.d-c{background:var(--cyan)}.d-e{background:var(--emerald)}.d-r{background:var(--rose)}.d-a{background:var(--amber)}.d-p{background:var(--accent-3)}
 
-    .toc-num {
-      font-family: 'Orbitron', monospace;
-      font-size: 0.7rem;
-      color: var(--accent-blue);
-      opacity: 0.6;
-      min-width: 22px;
-    }
+/* ═══════════════════════════════
+   STEPS
+   ═══════════════════════════════ */
+.steps{display:grid;gap:14px;margin-top:36px}
+.step{padding:22px 22px 22px 64px;position:relative}
+.step-n{position:absolute;left:22px;top:22px;font-family:var(--font-mono);font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.step h3{font-size:.92rem;font-weight:700;margin-bottom:5px}
+.step p{color:var(--text-2);font-size:.83rem}
+.step::after{content:'';position:absolute;left:35px;top:44px;width:1px;height:calc(100% - 20px);background:linear-gradient(to bottom,var(--accent-2),transparent)}
+.step:last-child::after{display:none}
 
-    .toc-icon {
-      width: 18px;
-      height: 18px;
-      opacity: 0.7;
-    }
+/* ═══════════════════════════════
+   TIMELINE
+   ═══════════════════════════════ */
+.tl{position:relative;margin-top:36px;padding-left:36px}
+.tl::before{content:'';position:absolute;left:13px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent-2),var(--cyan),var(--accent-2))}
+.tl-item{position:relative;padding:0 0 36px 22px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-30px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid var(--accent-2);background:var(--bg-0);transition:background .3s}
+.tl-time{font-family:var(--font-mono);font-size:.68rem;color:var(--accent);margin-bottom:5px;letter-spacing:1px}
+.tl-item h3{font-size:.92rem;font-weight:700;margin-bottom:3px}
+.tl-item p{color:var(--text-2);font-size:.83rem}
 
-    /* Profession Sections */
-    .profession {
-      position: relative;
-      margin-bottom: 70px;
-      padding: 40px;
-      background: var(--bg-card);
-      border: 1px solid rgba(0, 229, 255, 0.1);
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      transition: border-color 0.4s, box-shadow 0.4s;
-    }
+/* ═══════════════════════════════
+   ERTX
+   ═══════════════════════════════ */
+.ertx{padding:44px;margin-top:36px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--glow),transparent);border:1px solid var(--border);border-radius:var(--radius)}
+.ertx::before{content:'';position:absolute;top:-40%;right:-15%;width:260px;height:260px;background:radial-gradient(circle,var(--glow-strong),transparent);border-radius:50%;pointer-events:none}
+.ertx-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:20px}
+.ertx-it{display:flex;gap:12px;align-items:flex-start}
+.ertx-it .ic{flex-shrink:0;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.ertx-it h4{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.ertx-it p{color:var(--text-2);font-size:.82rem;line-height:1.6}
+@media(max-width:700px){.ertx-grid{grid-template-columns:1fr}}
 
-    .profession:hover {
-      border-color: var(--border-glow);
-      box-shadow: 0 0 40px rgba(0, 229, 255, 0.06);
-    }
+/* ═══════════════════════════════
+   QUIZ
+   ═══════════════════════════════ */
+.quiz-wrap{max-width:680px;margin:36px auto 0;padding:36px 40px}
+.q-prog{display:flex;gap:5px;margin-bottom:28px}
+.q-prog .dot{width:100%;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
+.q-prog .dot.active{background:var(--accent)}
+.q-prog .dot.done{background:var(--emerald)}
+.q-q{font-size:1rem;font-weight:600;margin-bottom:20px;line-height:1.5}
+.q-opts{display:flex;flex-direction:column;gap:9px}
+.q-opt{padding:13px 16px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .22s;font-size:.87rem;color:var(--text-2);background:var(--surface);display:flex;align-items:center;gap:11px}
+.q-opt:hover{border-color:var(--accent);color:var(--text);background:var(--glow)}
+.q-opt.sel{border-color:var(--accent);background:var(--glow);color:var(--text)}
+.q-opt .lt{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);min-width:18px}
+.q-nav{display:flex;justify-content:space-between;margin-top:24px}
+.q-btn{padding:9px 22px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.83rem;cursor:pointer;transition:all .22s}
+.q-btn:hover{border-color:var(--accent);background:var(--glow)}
+.q-btn:disabled{opacity:.25;cursor:not-allowed}
+.q-btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.q-btn.pri:hover{box-shadow:0 4px 16px var(--glow-strong)}
 
-    .profession::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 40px;
-      right: 40px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-      opacity: 0.3;
-    }
+.q-res{text-align:center;padding:20px 0}
+@media(max-width:600px){.quiz-wrap{padding:28px 20px}}
+.q-res .sc{font-size:2.8rem;font-weight:900;font-family:var(--font-mono);background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.q-res h3{font-size:1.15rem;margin-bottom:8px}
+.q-res p{color:var(--text-2);font-size:.88rem;max-width:440px;margin:0 auto}
 
-    .profession-header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 20px;
-    }
-
-    .profession-icon {
-      width: 48px;
-      height: 48px;
-      flex-shrink: 0;
-    }
-
-    .profession h2 {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      letter-spacing: 1px;
-    }
-
-    .profession-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .tag {
-      font-size: 0.72rem;
-      padding: 4px 12px;
-      border-radius: 20px;
-      background: rgba(41, 121, 255, 0.12);
-      color: var(--accent-blue);
-      border: 1px solid rgba(41, 121, 255, 0.2);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .profession p {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.8;
-      margin-bottom: 16px;
-    }
-
-    .profession p strong {
-      color: var(--text-primary);
-    }
-
-    .key-skills {
-      margin-top: 20px;
-    }
-
-    .key-skills h3 {
-      font-family: 'Orbitron', monospace;
-      font-size: 0.75rem;
-      color: var(--accent-blue);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-    }
-
-    .skill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .skill-chip {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      background: rgba(0, 229, 255, 0.06);
-      border: 1px solid rgba(0, 229, 255, 0.12);
-      border-radius: 8px;
-      font-size: 0.82rem;
-      color: var(--text-primary);
-    }
-
-    .skill-chip svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    /* Divider */
-    .section-divider {
-      text-align: center;
-      margin: 60px 0;
-      position: relative;
-    }
-
-    .section-divider::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
-    }
-
-    .section-divider span {
-      position: relative;
-      background: var(--bg-primary);
-      padding: 0 20px;
-      font-family: 'Orbitron', monospace;
-      font-size: 0.65rem;
-      color: var(--accent-cyan);
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      opacity: 0.5;
-    }
-
-    /* Footer */
-    footer {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 60px 20px 40px;
-      border-top: 1px solid rgba(0, 229, 255, 0.08);
-      margin-top: 40px;
-    }
-
-    footer p {
-      font-size: 0.8rem;
-      color: rgba(224, 247, 250, 0.3);
-      letter-spacing: 2px;
-      font-family: 'Orbitron', monospace;
-    }
-
-    /* Responsive */
-    @media (max-width: 700px) {
-      .profession { padding: 24px 18px; }
-      .toc { padding: 24px 20px; }
-      .toc-grid { grid-template-columns: 1fr; }
-      header { padding: 50px 16px 30px; }
-    }
-  </style>
+/* ═══════════════════════════════
+   FOOTER
+   ═══════════════════════════════ */
+footer{padding:36px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-3);font-size:.78rem}
+</style>
 </head>
 <body>
 
-<div class="grid-bg"></div>
-<div class="scanline"></div>
-<div class="particles" id="particles"></div>
-
-<header>
-  <svg class="logo-icon" viewBox="0 0 80 80" fill="none">
-    <rect x="2" y="2" width="76" height="76" rx="16" stroke="url(#hg1)" stroke-width="2"/>
-    <path d="M24 52V28l16 12-16 12z" fill="#00e5ff" opacity="0.8"/>
-    <path d="M40 52V28l16 12-16 12z" fill="#2979ff" opacity="0.6"/>
-    <circle cx="62" cy="28" r="4" fill="#00e5ff"/>
-    <circle cx="62" cy="40" r="3" fill="#2979ff" opacity="0.6"/>
-    <circle cx="62" cy="52" r="2" fill="#00e5ff" opacity="0.3"/>
-    <defs>
-      <linearGradient id="hg1" x1="0" y1="0" x2="80" y2="80">
-        <stop stop-color="#00e5ff"/>
-        <stop offset="1" stop-color="#2979ff"/>
-      </linearGradient>
-    </defs>
-  </svg>
-  <h1>IT-профессии 2026</h1>
-  <p class="subtitle">Руководство по самым востребованным и перспективным карьерным путям в мире технологий</p>
-</header>
-
-<div class="container">
-
-  <!-- Table of Contents -->
-  <nav class="toc">
-    <div class="toc-title">Навигация</div>
-    <div class="toc-grid">
-      <a href="#ai-ml">
-        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M16 14H8a6 6 0 0 0-6 6v0h20v0a6 6 0 0 0-6-6z"/><circle cx="19" cy="5" r="3"/></svg>
-        <span><span class="toc-num">01</span> AI / ML Engineer</span>
-      </a>
-      <a href="#platform-eng">
-        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        <span><span class="toc-num">02</span> Platform Engineer</span>
-      </a>
-      <a href="#cybersec">
-        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><path d="M12 2l8 4v6c0 5.25-3.5 9.74-8 11-4.5-1.26-8-5.75-8-11V6l8-4z"/></svg>
-        <span><span class="toc-num">03</span> Cybersecurity Engineer</span>
-      </a>
-      <a href="#cloud-arch">
-        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-        <span><span class="toc-num">04</span> Cloud Architect</span>
-      </a>
-      <a href="#data-eng">
-        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-        <span><span class="toc-num">05</span> Data Engineer</span>
-      </a>
-      <a href="#fullstack">
-        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
-        <span><span class="toc-num">06</span> Full-Stack Developer</span>
-      </a>
-      <a href="#product">
-        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        <span><span class="toc-num">07</span> Product Manager (Tech)</span>
-      </a>
-      <a href="#ai-solutions">
-        <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        <span><span class="toc-num">08</span> AI Solutions Architect</span>
-      </a>
-    </div>
-  </nav>
-
-  <div class="section-divider"><span>// professions</span></div>
-
-  <!-- 01 AI/ML Engineer -->
-  <section class="profession" id="ai-ml">
-    <div class="profession-header">
-      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
-        <rect width="48" height="48" rx="12" fill="url(#ai1)"/>
-        <path d="M14 32V16l10 8-10 8z" fill="#fff" opacity="0.9"/>
-        <path d="M24 32V16l10 8-10 8z" fill="#fff" opacity="0.5"/>
-        <circle cx="38" cy="14" r="3" fill="#fff" opacity="0.7"/>
-        <defs><linearGradient id="ai1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#0d47a1"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
-      </svg>
-      <h2>AI / ML Engineer</h2>
-    </div>
-    <div class="profession-tags">
-      <span class="tag">Машинное обучение</span>
-      <span class="tag">Нейросети</span>
-      <span class="tag">LLM</span>
-      <span class="tag">MLOps</span>
-    </div>
-    <p>
-      Инженеры AI/ML проектируют и обучают модели, которые решают реальные бизнес-задачи — от генерации контента до автономных систем принятия решений. В 2026 году фокус сместился с классического ML на <strong>оркестрацию агентных систем</strong>: модели не просто предсказывают, а действуют — вызывают инструменты, планируют цепочки действий и взаимодействуют с другими агентами. Ключевое отличие от прошлых лет — необходимость глубокого понимания не только математики, но и <strong>продуктового мышления</strong>: инженер должен знать, зачем модель существует и как она монетизируется.
-    </p>
-    <p>
-      Рынок взрывообразно растёт: по данным McKinsey, к 2026 году 40% рабочих задач в развитых странах будут автоматизированы с помощью AI. Средняя зарплата в США превышает $180K, а в Европе стартует от €90K. Востребованы специалисты, которые умеют не только обучать модели, но и <strong>оптимизировать их инференс</strong> — доу Quantization, Distillation, Pruning.
-    </p>
-    <div class="key-skills">
-      <h3>Ключевые навыки</h3>
-      <div class="skill-list">
-        <span class="skill-chip">Python / PyTorch / JAX</span>
-        <span class="skill-chip">Transformers & LLM fine-tuning</span>
-        <span class="skill-chip">RAG & Vector DB</span>
-        <span class="skill-chip">MLOps (MLflow, Kubeflow)</span>
-        <span class="skill-chip">Agentic frameworks (LangGraph, CrewAI)</span>
-        <span class="skill-chip">Distributed training</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 02 Platform Engineer -->
-  <section class="profession" id="platform-eng">
-    <div class="profession-header">
-      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
-        <rect width="48" height="48" rx="12" fill="url(#plat1)"/>
-        <rect x="8" y="12" width="32" height="20" rx="3" stroke="#fff" stroke-width="2" fill="none"/>
-        <circle cx="14" cy="18" r="2" fill="#fff"/>
-        <circle cx="20" cy="18" r="2" fill="#fff" opacity="0.6"/>
-        <line x1="8" y1="24" x2="40" y2="24" stroke="#fff" stroke-width="1" opacity="0.3"/>
-        <rect x="12" y="27" width="8" height="2" rx="1" fill="#fff" opacity="0.5"/>
-        <rect x="24" y="27" width="10" height="2" rx="1" fill="#fff" opacity="0.3"/>
-        <defs><linearGradient id="plat1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#1a237e"/><stop offset="1" stop-color="#2979ff"/></linearGradient></defs>
-      </svg>
-      <h2>Platform Engineer</h2>
-    </div>
-    <div class="profession-tags">
-      <span class="tag">Инженерия платформ</span>
-      <span class="tag">IDP</span>
-      <span class="tag">Kubernetes</span>
-      <span class="tag">Developer Experience</span>
-    </div>
-    <p>
-      Platform Engineer — это эволюция DevOps-инженера, сосредоточенная на создании <strong>внутренних платформ</strong> (Internal Developer Platforms), которые делают разработку безопасной, быстрой и предсказуемой. Вместо того чтобы каждый раз «изобретать велосипед» для деплоя, команда получает самосервисный портал с каталогом шаблонов, автоматизированными пайплайнами и встроенным мониторингом.
-    </p>
-    <p>
-      По данным Gartner, к 2026 году <strong>80% инженерных организаций</strong> создадут собственные платформы. Главный вызов — баланс между стандартизацией и свободой: платформа должна ускорять, а не ограничивать. Хороший Platform Engineer обладает глубоким пониманием developer experience (DX) и умением проектировать абстракции, которые <strong>не нуждаются в документации</strong> — они интуитивно понятны.
-    </p>
-    <div class="key-skills">
-      <h3>Ключевые навыки</h3>
-      <div class="skill-list">
-        <span class="skill-chip">Kubernetes / Helm / ArgoCD</span>
-        <span class="skill-chip">Terraform / Pulumi</span>
-        <span class="skill-chip">Backstage / Port / Humanitec</span>
-        <span class="skill-chip">GitOps</span>
-        <span class="skill-chip">Observability (OpenTelemetry)</span>
-        <span class="skill-chip">Platform-as-Product подход</span>
-      </div>
-    </div>
-  </section>
-
-  <div class="section-divider"><span>// security & cloud</span></div>
-
-  <!-- 03 Cybersecurity Engineer -->
-  <section class="profession" id="cybersec">
-    <div class="profession-header">
-      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
-        <rect width="48" height="48" rx="12" fill="url(#sec1)"/>
-        <path d="M24 6l14 7v9c0 10-6 18-14 21C18 40 12 32 12 22v-9l14-7z" stroke="#fff" stroke-width="2" fill="none"/>
-        <path d="M18 24l4 4 8-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <defs><linearGradient id="sec1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#004d40"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
-      </svg>
-      <h2>Cybersecurity Engineer</h2>
-    </div>
-    <div class="profession-tags">
-      <span class="tag">Защита</span>
-      <span class="tag">Threat Intelligence</span>
-      <span class="tag">AI-безопасность</span>
-      <span class="tag">Zero Trust</span>
-    </div>
-    <p>
-      Кибербезопасность в 2026 году — это не только про файрволы и антивирусы. Главный тренд — <strong>защита AI-систем от атак</strong>: prompt injection, data poisoning, model extraction. Появилась целая подотрасль — AI Red Teaming, где специалисты атакуют собственные модели компании, чтобы найти уязвимости до злоумышленников. Другой фокус — <strong>Supply Chain Security</strong>: проверка зависимостей, контейнеров и open-source компонентов на скомпрометированные библиотеки.
-    </p>
-    <p>
-      Дефицит специалистов критический:ISC² сообщает о нехватке <strong>4.8 млн человек</strong> по всему миру. Средняя зарплата в США — $135K+, а специалисты по AI Security — $170K+. Работа требует постоянного обучения: атаки эволюционируют быстрее, чем防御ные системы. Ключевое качество — <strong>атакующее мышление</strong>: умение думать как злоумышленник.
-    </p>
-    <div class="key-skills">
-      <h3>Ключевые навыки</h3>
-      <div class="skill-list">
-        <span class="skill-chip">Network & App Security</span>
-        <span class="skill-chip">SIEM / SOAR</span>
-        <span class="skill-chip">AI Red Teaming</span>
-        <span class="skill-chip">Zero Trust Architecture</span>
-        <span class="skill-chip">Threat Modeling (STRIDE)</span>
-        <span class="skill-chip">DevSecOps Pipeline</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 04 Cloud Architect -->
-  <section class="profession" id="cloud-arch">
-    <div class="profession-header">
-      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
-        <rect width="48" height="48" rx="12" fill="url(#cloud1)"/>
-        <path d="M14 30h20a8 8 0 0 0 0-16h-1a10 10 0 0 0-19 5 6 6 0 0 0 0 11z" stroke="#fff" stroke-width="2" fill="none"/>
-        <circle cx="20" cy="22" r="1.5" fill="#fff"/>
-        <circle cx="26" cy="19" r="1.5" fill="#fff" opacity="0.7"/>
-        <circle cx="32" cy="22" r="1" fill="#fff" opacity="0.4"/>
-        <defs><linearGradient id="cloud1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#0d47a1"/><stop offset="1" stop-color="#00bcd4"/></linearGradient></defs>
-      </svg>
-      <h2>Cloud Architect</h2>
-    </div>
-    <div class="profession-tags">
-      <span class="tag">AWS / Azure / GCP</span>
-      <span class="tag">Мульти-клауд</span>
-      <span class="tag">FinOps</span>
-      <span class="tag">Well-Architected</span>
-    </div>
-    <p>
-      Cloud Architect проектирует архитектуру инфраструктуры с учётом масштабируемости, отказоустойчивости и <strong>оптимизации затрат</strong>. В 2026 году мульти-клауд стал стандартом, а не исключением: компании используют AWS для вычислений, GCP для AI/ML-сервисов и Azure для интеграции с корпоративными системами. Главная боль — <strong>FinOps</strong>: облака становятся дороже, и архитектор должен уметь прогнозировать и контролировать расходы.
-    </p>
-    <p>
-      Появились новые концепции: <strong>Sovereign Cloud</strong> (облака с суверенитетом данных для регуляторных требований), <strong>Edge-to-Cloud</strong> (обработка данных на edge с последующей синхронизацией) и <strong>AI-native Infrastructure</strong> (оптимизированная под GPU-кластеры и inference). Зарплата в США — от $160K, в Европе — от €100K.
-    </p>
-    <div class="key-skills">
-      <h3>Ключевые навыки</h3>
-      <div class="skill-list">
-        <span class="skill-chip">Multi-cloud strategy</span>
-        <span class="skill-chip">FinOps & Cost optimization</span>
-        <span class="skill-chip">Well-Architected Framework</span>
-        <span class="skill-chip">Disaster Recovery</span>
-        <span class="skill-chip">Network Architecture (VPC, Transit Gateway)</span>
-        <span class="skill-chip">GPU Clusters for AI workloads</span>
-      </div>
-    </div>
-  </section>
-
-  <div class="section-divider"><span>// data & engineering</span></div>
-
-  <!-- 05 Data Engineer -->
-  <section class="profession" id="data-eng">
-    <div class="profession-header">
-      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
-        <rect width="48" height="48" rx="12" fill="url(#data1)"/>
-        <ellipse cx="24" cy="14" rx="14" ry="5" stroke="#fff" stroke-width="2" fill="none"/>
-        <path d="M10 14v10c0 2.76 6.27 5 14 5s14-2.24 14-5V14" stroke="#fff" stroke-width="2" fill="none"/>
-        <path d="M10 24v10c0 2.76 6.27 5 14 5s14-2.24 14-5V24" stroke="#fff" stroke-width="2" fill="none"/>
-        <defs><linearGradient id="data1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#1b5e20"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
-      </svg>
-      <h2>Data Engineer</h2>
-    </div>
-    <div class="profession-tags">
-      <span class="tag">Пайплайны данных</span>
-      <span class="tag">Real-time</span>
-      <span class="tag">Data Mesh</span>
-      <span class="tag">Data Quality</span>
-    </div>
-    <p>
-      Data Engineer строит инфраструктуру, которая превращает сырые данные в <strong>надёжный аналитический актив</strong>. В 2026 году ключевой тренд — <strong>Data Products</strong>: данные перестали быть «побочным продуктом» и стали самостоятельными продуктами с SLA, документацией и потребителями. Data Mesh набирает обороты: decentralизация владения данными и доменная ориентированность.
-    </p>
-    <p>
-      Новым must-have стал <strong>Real-time Processing</strong>: компании больше не могут ждать ночных batch-процессов. Apache Kafka, Flink и Materialize стали стандартом. Кроме того, с ростом AI появился спрос на <strong>Feature Engineering</strong> — построение пайплайнов для генерации признаков моделей в реальном времени. Зарплата в США — от $145K, в Европе — от €80K.
-    </p>
-    <div class="key-skills">
-      <h3>Ключевые навыки</h3>
-      <div class="skill-list">
-        <span class="skill-chip">Spark / Flink / Beam</span>
-        <span class="skill-chip">Kafka / Pulsar</span>
-        <span class="skill-chip">dbt / SQL</span>
-        <span class="skill-chip">Data Modeling (Dimensional, Data Vault)</span>
-        <span class="skill-chip">Airflow / Dagster</span>
-        <span class="skill-chip">Data Quality (Great Expectations)</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 Full-Stack Developer -->
-  <section class="profession" id="fullstack">
-    <div class="profession-header">
-      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
-        <rect width="48" height="48" rx="12" fill="url(#fs1)"/>
-        <polyline points="16 16 10 22 16 28" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <polyline points="32 16 38 22 32 28" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <line x1="28" y1="12" x2="20" y2="32" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-        <defs><linearGradient id="fs1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#4a148c"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
-      </svg>
-      <h2>Full-Stack Developer</h2>
-    </div>
-    <div class="profession-tags">
-      <span class="tag">Веб</span>
-      <span class="tag">TypeScript</span>
-      <span class="tag">AI-augmented</span>
-      <span class="tag">Edge Computing</span>
-    </div>
-    <p>
-      Full-Stack Developer в 2026 году — это не «мужик на всё», а <strong>специалист по быстрой доставке ценности</strong>. Главный тренд — AI-augmented разработка: Copilot, Cursor и подобные инструменты ускоряют написание кода в 3-5 раз, но создают новую проблему — <strong>понимание сгенерированного кода</strong>. Хороший full-stack теперь должен уметь критически оценивать AI-выводы и проектировать архитектуру, которую AI ещё не научился создавать.
-    </p>
-    <p>
-      Технологический стек стремительно сближается: Next.js / Nuxt для фронта, tRPC / Hono для API, Prisma / Drizzle для БД. <strong>Edge-first подход</strong> стал нормой: код выполняется ближе к пользователю (Cloudflare Workers, Vercel Edge Functions, Deno Deploy). Зарплата — от $120K в США, от €70K в Европе. Самые востребованные — те, кто умеет связывать AI-сервисы в единую архитектуру.
-    </p>
-    <div class="key-skills">
-      <h3>Ключевые навыки</h3>
-      <div class="skill-list">
-        <span class="skill-chip">React / Vue / Svelte</span>
-        <span class="skill-chip">Node.js / Bun / Deno</span>
-        <span class="skill-chip">TypeScript (strict mode)</span>
-        <span class="skill-chip">Edge Runtime</span>
-        <span class="skill-chip">AI API Integration</span>
-        <span class="skill-chip">Testing (Vitest, Playwright)</span>
-      </div>
-    </div>
-  </section>
-
-  <div class="section-divider"><span>// strategy & leadership</span></div>
-
-  <!-- 07 Product Manager (Tech) -->
-  <section class="profession" id="product">
-    <div class="profession-header">
-      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
-        <rect width="48" height="48" rx="12" fill="url(#pm1)"/>
-        <circle cx="24" cy="24" r="14" stroke="#fff" stroke-width="2" fill="none"/>
-        <path d="M24 14v10l7 4" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <circle cx="24" cy="24" r="3" fill="#fff" opacity="0.5"/>
-        <defs><linearGradient id="pm1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#e65100"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
-      </svg>
-      <h2>Product Manager (Tech)</h2>
-    </div>
-    <div class="profession-tags">
-      <span class="tag">Продукт</span>
-      <span class="tag">Стратегия</span>
-      <span class="tag">AI-продукты</span>
-      <span class="tag">Data-driven</span>
-    </div>
-    <p>
-      Технический Product Manager — это <strong>переводчик между бизнесом и инженерией</strong>, который принимает решения на основе данных, а не интуиции. В 2026 году главный навык — понимание AI: PM должен знать, что модели умеют и чего не умеют, чтобы ставить реалистичные задачи и избегать «AI-washing» продукта. Появилась новая роль — <strong>AI Product Manager</strong>, который специализируется на продуктах, где AI является ядром ценности, а не фичей.
-    </p>
-    <p>
-      Рынок PM растёт: по данным Productboard, 62% компаний увеличили количество PM-позиций за последний год. Ключевой вызов — <strong>принимать решения в условиях неопределённости</strong>: когда AI-модели обновляются каждый месяц, roadmap не может быть фиксированным на полгода. Зарплата в США — от $130K, в Европе — от €85K.
-    </p>
-    <div class="key-skills">
-      <h3>Ключевые навыки</h3>
-      <div class="skill-list">
-        <span class="skill-chip">Product Discovery (Jobs-to-be-Done)</span>
-        <span class="skill-chip">AI/ML Literacy</span>
-        <span class="skill-chip">Data Analytics (SQL, Amplitude)</span>
-        <span class="skill-chip">A/B Testing & Experimentation</span>
-        <span class="skill-chip">Roadmap & Prioritization frameworks</span>
-        <span class="skill-chip">Stakeholder Management</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 08 AI Solutions Architect -->
-  <section class="profession" id="ai-solutions">
-    <div class="profession-header">
-      <svg class="profession-icon" viewBox="0 0 48 48" fill="none">
-        <rect width="48" height="48" rx="12" fill="url(#ais1)"/>
-        <polygon points="24 6 42 18 36 40 12 40 6 18" stroke="#fff" stroke-width="2" fill="none"/>
-        <circle cx="24" cy="24" r="6" stroke="#fff" stroke-width="1.5" fill="none"/>
-        <circle cx="24" cy="24" r="2" fill="#fff"/>
-        <line x1="24" y1="18" x2="24" y2="6" stroke="#fff" stroke-width="1" opacity="0.4"/>
-        <line x1="29" y1="27" x2="42" y2="18" stroke="#fff" stroke-width="1" opacity="0.4"/>
-        <line x1="19" y1="27" x2="6" y2="18" stroke="#fff" stroke-width="1" opacity="0.4"/>
-        <defs><linearGradient id="ais1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#880e4f"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs>
-      </svg>
-      <h2>AI Solutions Architect</h2>
-    </div>
-    <div class="profession-tags">
-      <span class="tag">Архитектура AI</span>
-      <span class="tag">Enterprise AI</span>
-      <span class="tag">LLM Ops</span>
-      <span class="tag">ROI</span>
-    </div>
-    <p>
-      AI Solutions Architect — это <strong>мост между возможностями AI и бизнес-задачами компании</strong>. Эта роль появилась потому, что 70% AI-проектов не доходят до продакшена: не из-за технологий, а из-за неправильной постановки задачи. Архитектор определяет, какую задачу можно решить с помощью AI, какую модель выбрать, как спроектировать систему, чтобы она была масштабируемой, и — самое важное — <strong>как измерить ROI</strong>.
-    </p>
-    <p>
-      В 2026 году главный тренд — <strong>AI-native Architecture</strong>: проектирование систем «с нуля» с учётом AI, а не «приклеивание» AI к существующим продуктам. Архитектор должен понимать и инфраструктуру (GPU-кластеры, inference serving), и данные (пайплайны, качество), и безопасность (compliance, responsible AI). Это одна из самых высокооплачиваемых ролей в IT: в США — от $190K, в Европе — от €120K.
-    </p>
-    <div class="key-skills">
-      <h3>Ключевые навыки</h3>
-      <div class="skill-list">
-        <span class="skill-chip">LLM & GenAI Architecture</span>
-        <span class="skill-chip">System Design (DDD, CQRS)</span>
-        <span class="skill-chip">Cloud + On-prem AI Infrastructure</span>
-        <span class="skill-chip">Responsible AI & Compliance</span>
-        <span class="skill-chip">Cost Modeling for AI workloads</span>
-        <span class="skill-chip">Stakeholder Communication</span>
-      </div>
-    </div>
-  </section>
-
+<div class="bg-wrap">
+  <div class="bg-grad"></div>
+  <div class="bg-grid"></div>
 </div>
 
-<footer>
-  <p>IT PROFESSIONS 2026 // CYAN TECH SERIES</p>
-</footer>
+<div class="content">
+
+<!-- ════════ NAV ════════ -->
+<nav>
+  <div class="wrap">
+    <div class="nav-logo"><span class="led"></span> fs.dev</div>
+    <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="#about">О профессии</a></li>
+      <li><a href="#tasks">Задачи</a></li>
+      <li><a href="#skills">Навыки</a></li>
+      <li><a href="#career">Карьера</a></li>
+      <li><a href="#day">День</a></li>
+      <li><a href="#ertx">ЭРТХ</a></li>
+      <li><a href="#quiz">Тест</a></li>
+      <li><button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme" id="themeBtn">&#9790;</button></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-badge"><span class="live"></span> Востребованность: высокая</div>
+      <h1><span class="gr">FullStack</span><br>Developer</h1>
+      <p>Человек, который строит продукт целиком. От первого пикселя на экране пользователя до серверной логики и базы данных. Полный цикл — один специалист.</p>
+
+      <div class="hero-price">
+        <div class="chip"><div><div class="val">120 000 - 200 000 &#8381;</div><div class="lbl">Junior / Middle (РФ)</div></div></div>
+        <div class="chip"><div><div class="val">200 000 - 400 000 &#8381;</div><div class="lbl">Senior / Lead (РФ)</div></div></div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#about" class="btn btn-fill">Подробнее &darr;</a>
+        <a href="#quiz" class="btn btn-ghost">Пройти тест</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="v">+34%</div><div class="l">Рост спроса за год (РФ)</div></div>
+        <div class="hero-stat"><div class="v">15 000+</div><div class="l">Открытых вакансий</div></div>
+        <div class="hero-stat"><div class="v">#1</div><div class="l">Самая гибкая роль в IT</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-orbit">
+    <div class="orb-ring"></div><div class="orb-ring"></div><div class="orb-ring"></div>
+    <div class="orb-dot"></div><div class="orb-dot"></div><div class="orb-dot"></div>
+  </div>
+</section>
+
+<!-- ════════ КТО ЭТО ════════ -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="anim">
+      <div class="sec-label">01 / Простыми словами</div>
+      <div class="sec-title">Кто такой FullStack Developer?</div>
+      <div class="sec-desc">Человек, который умеет работать и с тем, что видит пользователь, и с тем, что происходит на сервере.</div>
+    </div>
+    <div class="bento bento-2 anim" style="margin-top:36px">
+      <div class="card bento-card" style="grid-row:span 2">
+        <span class="b-tag">Frontend</span>
+        <div class="b-icon ic-cya">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>То, что видит пользователь</h3>
+        <p>Кнопки, формы, страницы, анимации, вёрстка — всё, с чем человек взаимодействует в браузере или приложении. Frontend отвечает за визуал, удобство и скорость отклика интерфейса.</p>
+        <p style="margin-top:14px;color:var(--text-3);font-size:.8rem">Технологии: HTML, CSS, JavaScript, React, Vue, Svelte</p>
+      </div>
+      <div class="card bento-card">
+        <span class="b-tag">Backend</span>
+        <div class="b-icon ic-ind">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
+        </div>
+        <h3>То, что работает под капотом</h3>
+        <p>Серверы, базы данных, расчёты, авторизация, обработка платежей. Backend — это машина, которая обеспечивает логику и надёжность приложения.</p>
+      </div>
+      <div class="card bento-card">
+        <span class="b-tag">Bridge</span>
+        <div class="b-icon ic-eme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h4m4 0h8M8 12a4 4 0 0 1-4-4V4m4 8a4 4 0 0 0 4 4m0 0a4 4 0 0 0 4-4V4"/></svg>
+        </div>
+        <h3>Связь между мирами</h3>
+        <p>FullStack-разработчик — мост между интерфейсом и сервером. Понимает, как frontend запрашивает данные, и как backend их обрабатывает и возвращает.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ЗАДАЧИ ════════ -->
+<section class="section" id="tasks">
+  <div class="wrap">
+    <div class="anim">
+      <div class="sec-label">02 / Практика</div>
+      <div class="sec-title">Рабочие задачи</div>
+      <div class="sec-desc">Чем конкретно занимается FullStack-разработчик каждый день.</div>
+    </div>
+    <div class="tasks anim">
+      <div class="card task">
+        <div class="task-n">01</div>
+        <div><h3>Разработка интерфейсов</h3><p>Вёрстка страниц, создание адаптивных компонентов, реализация форм и навигации. Контроль pixel-perfect и cross-browser совместимости.</p></div>
+      </div>
+      <div class="card task">
+        <div class="task-n">02</div>
+        <div><h3>Серверная логика</h3><p>Проектирование API-эндпоинтов, обработка запросов, авторизация пользователей, бизнес-логика — всё, что происходит на сервере до отправки ответа.</p></div>
+      </div>
+      <div class="card task">
+        <div class="task-n">03</div>
+        <div><h3>Работа с базами данных</h3><p>Проектирование схем, написание оптимизированных запросов, миграции данных. Выбор между SQL и NoSQL в зависимости от задачи.</p></div>
+      </div>
+      <div class="card task">
+        <div class="task-n">04</div>
+        <div><h3>Интеграция API</h3><p>Подключение внешних сервисов: платёжные системы, почта, CRM, AI-API. Написание и документирование REST или GraphQL интерфейсов.</p></div>
+      </div>
+      <div class="card task">
+        <div class="task-n">05</div>
+        <div><h3>Оптимизация производительности</h3><p>Профилирование узких мест, кеширование (Redis), ленивая загрузка, оптимизация SQL-запросов, код-сплиттинг. Цель — быстрая загрузка.</p></div>
+      </div>
+      <div class="card task">
+        <div class="task-n">06</div>
+        <div><h3>Тестирование и отладка</h3><p>Unit-тесты (Vitest, Jest), интеграционные тесты, e2e (Playwright). Поиск и исправление багов, воспроизведение edge-кейсов.</p></div>
+      </div>
+      <div class="card task">
+        <div class="task-n">07</div>
+        <div><h3>Развёртывание</h3><p>Деплой на VPS или облако, настройка CI/CD, мониторинг логов и метрик, обновление зависимостей, горячие патчи в продакшене.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ НАВЫКИ ════════ -->
+<section class="section" id="skills">
+  <div class="wrap">
+    <div class="anim">
+      <div class="sec-label">03 / Инструментарий</div>
+      <div class="sec-title">Навыки и технологии</div>
+      <div class="sec-desc">Что нужно знать и уметь для работы на позиции FullStack Developer.</div>
+    </div>
+    <div class="bento bento-2 anim">
+      <div class="card bento-card">
+        <div class="b-icon ic-ind">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Hard Skills</h3>
+        <div class="sk-lbl" style="margin-top:14px">Языки и фреймворки</div>
+        <div class="tags">
+          <span class="tag"><span class="d d-i"></span>HTML5 / Semantic</span>
+          <span class="tag"><span class="d d-c"></span>CSS3 / Flex / Grid</span>
+          <span class="tag"><span class="d d-a"></span>JavaScript (ES2024+)</span>
+          <span class="tag"><span class="d d-i"></span>TypeScript</span>
+          <span class="tag"><span class="d d-c"></span>React / Next.js</span>
+          <span class="tag"><span class="d d-e"></span>Node.js / Express</span>
+        </div>
+        <div class="sk-lbl" style="margin-top:18px">Инфраструктура</div>
+        <div class="tags">
+          <span class="tag"><span class="d d-r"></span>REST / GraphQL</span>
+          <span class="tag"><span class="d d-p"></span>PostgreSQL / MongoDB</span>
+          <span class="tag"><span class="d d-a"></span>Git / GitHub</span>
+          <span class="tag"><span class="d d-c"></span>Docker</span>
+          <span class="tag"><span class="d d-e"></span>CI/CD (GitHub Actions)</span>
+          <span class="tag"><span class="d d-i"></span>Linux / Bash</span>
+        </div>
+      </div>
+      <div class="card bento-card">
+        <div class="b-icon ic-eme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Soft Skills</h3>
+        <div class="tags" style="margin-top:14px">
+          <span class="tag"><span class="d d-i"></span>Коммуникация с командой</span>
+          <span class="tag"><span class="d d-c"></span>Системное мышление</span>
+          <span class="tag"><span class="d d-e"></span>Самообучение</span>
+          <span class="tag"><span class="d d-r"></span>Работа в команде</span>
+          <span class="tag"><span class="d d-a"></span>Управление временем</span>
+          <span class="tag"><span class="d d-p"></span>Декомпозиция задач</span>
+        </div>
+        <div class="sk-lbl" style="margin-top:20px">Методологии</div>
+        <div class="tags">
+          <span class="tag"><span class="d d-i"></span>Agile / Scrum</span>
+          <span class="tag"><span class="d d-c"></span>Code Review</span>
+          <span class="tag"><span class="d d-e"></span>TDD</span>
+          <span class="tag"><span class="d d-a"></span>Clean Code</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ КАРЬЕРА ════════ -->
+<section class="section" id="career">
+  <div class="wrap">
+    <div class="anim">
+      <div class="sec-label">04 / Путь</div>
+      <div class="sec-title">Как студенту начать карьеру</div>
+      <div class="sec-desc">Пошаговый план от нуля до первой позиции.</div>
+    </div>
+    <div class="steps anim">
+      <div class="card step">
+        <div class="step-n">01</div>
+        <h3>Освой основы веб-разработки</h3>
+        <p>HTML для структуры, CSS для стиля, JavaScript для логики. Не беги к фреймворкам — сначала пойми, как работает браузер, DOM, асинхронность и события. Ресурсы: MDN Web Docs.</p>
+      </div>
+      <div class="card step">
+        <div class="step-n">02</div>
+        <h3>Создавай pet-проекты</h3>
+        <p>To-do приложение, калькулятор, трекер задач, мини-магазин. Каждый проект — решение реальной проблемы. Пушь на GitHub с нормальными коммитами. 3-5 проектов — хорошее начало.</p>
+      </div>
+      <div class="card step">
+        <div class="step-n">03</div>
+        <h3>Освой Git и GitHub</h3>
+        <p>Branch, merge, rebase, pull request — это повседневная реальность. Заведи профиль, участвуй в open-source, пиши осмысленные коммиты. Работодатели смотрят на профиль.</p>
+      </div>
+      <div class="card step">
+        <div class="step-n">04</div>
+        <h3>Собери портфолио</h3>
+        <p>Лендинг с описанием проектов, скриншотами и ссылками на GitHub. Покажи не только «что сделал», но и «почему так». Каждый проект решает конкретную задачу.</p>
+      </div>
+      <div class="card step">
+        <div class="step-n">05</div>
+        <h3>Изучай современный стек</h3>
+        <p>TypeScript, React, Node.js, PostgreSQL, Docker. Не нужно знать всё — выбери одно направление и углубляйся. Следи за трендами: edge computing, AI-интеграции, server components.</p>
+      </div>
+      <div class="card step">
+        <div class="step-n">06</div>
+        <h3>Готовься к стажировкам</h3>
+        <p>Решай задачи на LeetCode (средний уровень), изучи основы системного дизайна. На собеседовании проверят понимание основ, а не знание фреймворков.</p>
+      </div>
+      <div class="card step">
+        <div class="step-n">07</div>
+        <h3>Ищи первую работу</h3>
+        <p>Junior FullStack или Frontend/Backend с возможностью расти. Не гонись за зарплатой — важнее опыт и ментор. Стартапы и малые компании — там быстрее растёшь.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ДЕНЬ ════════ -->
+<section class="section" id="day">
+  <div class="wrap">
+    <div class="anim">
+      <div class="sec-label">05 / Распорядок</div>
+      <div class="sec-title">Один день из жизни</div>
+      <div class="sec-desc">Типичный рабочий день FullStack-разработчика в компании.</div>
+    </div>
+    <div class="tl anim">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">09:00 - 09:30</div>
+        <h3>Планирование задач</h3>
+        <p>Stand-up или личный обзор доски (Jira/Linear). Определяешь приоритеты на день: что деплоить, что рефакторить, что фиксить.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">09:30 - 12:00</div>
+        <h3>Глубокая работа</h3>
+        <p>Самое продуктивное время. Пишешь код: реализуешь компонент, серверную логику или интегрируешь API. Наушники, фокус, никаких сообщений.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">12:00 - 13:00</div>
+        <h3>Код-ревью</h3>
+        <p>Проверяешь pull request-ы коллег, даёшь фидбек. Или сам выставляешь PR — описываешь изменения, привязываешь тикет.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">13:00 - 14:00</div>
+        <h3>Обед</h3>
+        <p>Перерыв. Выходишь из-за компьютера. Важно для концентрации во второй половине дня.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">14:00 - 15:00</div>
+        <h3>Встречи команды</h3>
+        <p>Sprint-планирование, обсуждение архитектуры, sync с дизайнером или продактом. Уточняешь требования, оцениваешь сроки.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">15:00 - 17:00</div>
+        <h3>Тестирование и отладка</h3>
+        <p>Пишешь тесты, проверяешь edge-кейсы, фиксишь баги. DevTools, логи, мониторинг. Иногда — «работает, но почему-то нет».</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">17:00 - 17:30</div>
+        <h3>Деплой и завершение</h3>
+        <p>Мержишь изменения, проверяешь CI/CD, деплоишь в staging. Закрываешь тикеты, обновляешь статусы. Фиксируешь, что осталось на завтра.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ЭРТХ ════════ -->
+<section class="section" id="ertx">
+  <div class="wrap">
+    <div class="anim">
+      <div class="sec-label">06 / Миссия</div>
+      <div class="sec-title">Почему роль важна для ЭРТХ</div>
+    </div>
+    <div class="ertx anim">
+      <div class="ertx-grid">
+        <div class="ertx-it">
+          <div class="ic ic-ind"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div><h4>Создание цифровых продуктов</h4><p>FullStack-разработчики — ядро команды, которая превращает идеи в работающие сервисы. От внутренних инструментов до клиентских платформ — они строят то, чем пользуются люди каждый день.</p></div>
+        </div>
+        <div class="ertx-it">
+          <div class="ic ic-cya"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div><h4>Скорость запуска</h4><p>FullStack закрывает оба конца — не нужно ждать, пока отдельные команды напишут фронтенд и бэкенд. Один специалист может выдать готовый MVP за дни, а не месяцы.</p></div>
+        </div>
+        <div class="ertx-it">
+          <div class="ic ic-eme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5.25-3.5 9.74-8 11-4.5-1.26-8-5.75-8-11V6l8-4z"/></svg></div>
+          <div><h4>Решение реальных задач</h4><p>Автоматизация процессов, аналитические дашборды, интеграция с государственными системами, клиентские порталы — задачи, влияющие на эффективность.</p></div>
+        </div>
+        <div class="ertx-it">
+          <div class="ic ic-ros"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <div><h4>Масштабирование</h4><p>Когда продукт растёт, FullStack адаптирует архитектуру: оптимизирует базы, вводит кеширование, разбивает монолит на сервисы. Он растёт вместе с продуктом.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ QUIZ ════════ -->
+<section class="section" id="quiz">
+  <div class="wrap">
+    <div class="anim">
+      <div class="sec-label">07 / Проверь себя</div>
+      <div class="sec-title">Подходит ли тебе профессия?</div>
+      <div class="sec-desc">Ответь на 7 вопросов честно. Это поможет понять, насколько роль FullStack Developer тебе близка.</div>
+    </div>
+    <div class="card quiz-wrap anim" id="quizBox">
+      <div class="q-prog" id="qProg"></div>
+      <div id="qBody"></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><p>FullStack Developer &copy; 2026</p></div></footer>
+
+</div><!-- /content -->
 
 <script>
-  const container = document.getElementById('particles');
-  for (let i = 0; i < 40; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.animationDuration = (8 + Math.random() * 12) + 's';
-    p.style.animationDelay = Math.random() * 10 + 's';
-    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
-    container.appendChild(p);
-  }
-</script>
+/* ── Scroll anim ── */
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.anim').forEach(el=>obs.observe(el));
 
+/* ── Theme ── */
+function toggleTheme(){
+  const r=document.documentElement,t=r.getAttribute('data-theme')==='dark'?'light':'dark';
+  r.setAttribute('data-theme',t);
+  document.getElementById('themeBtn').innerHTML=t==='dark'?'&#9790;':'&#9728;';
+}
+
+/* ── Quiz ── */
+const Q=[
+  {q:"Когда ты сталкиваешься с новой технологией, твоя первая реакция:",o:["Хочу попробовать прямо сейчас","Найду туториал и пройду","Подожду, пока она станет популярной","Мне проще работать с тем, что уже знаю"],s:[3,2,1,0]},
+  {q:"Тебя больше привлекает:",o:["Создавать красивые интерфейсы","Писать логику и алгоритмы","И то, и другое одинаково","Скорее настройка серверов и деплой"],s:[1,1,3,2]},
+  {q:"В групповом проекте ты обычно:",o:["Беру на себя координацию","Делаю свою часть и помогаю другим","Предлагаю идеи, но не всегда реализую","Лучше работать в паре, чем в команде"],s:[2,3,1,2]},
+  {q:"Когда код не работает, ты:",o:["Начинаю дебажить с логов и breakpoint-ов","Гуглю ошибку и пробую решения","Прошу помощь у коллеги","Откладываю и возвращаюсь через час"],s:[3,2,2,1]},
+  {q:"Что для тебя важнее в работе?",o:["Видеть результат у пользователей","Решать сложные технические задачи","Быть частью успешного продукта","Стабильная зарплата и график"],s:[2,1,3,1]},
+  {q:"Ты когда-нибудь писал код просто для себя?",o:["Да, есть pet-проекты","Нет, но хотел бы начать","Да, но бросил, потому что не было цели","Нет, код — это только работа"],s:[3,2,1,0]},
+  {q:"Насколько тебе комфортно учиться новому без структурированного обучения?",o:["Очень — я self-taught по натуре","Умею, но предпочитаю курсы","С трудом — мне нужен ментор","Учу только то, что нужно для работы"],s:[3,2,1,1]}
+];
+
+let cQ=0,ans=[],sc=0;
+
+function renderQ(){
+  const b=document.getElementById('qBody'),p=document.getElementById('qProg');
+  if(cQ>=Q.length){showRes();return}
+  p.innerHTML=Q.map((_,i)=>'<div class="dot '+(i<cQ?'done':i===cQ?'active':'')+'"></div>').join('');
+  const q=Q[cQ];
+  b.innerHTML='<div class="q-q">'+(cQ+1)+'. '+q.q+'</div><div class="q-opts">'+q.o.map((o,i)=>'<div class="q-opt'+(ans[cQ]===i?' sel':'')+'" data-i="'+i+'"><span class="lt">'+('ABCD'[i])+'</span><span>'+o+'</span></div>').join('')+'</div><div class="q-nav"><button class="q-btn" '+(cQ===0?'disabled':'')+' onclick="prevQ()">Назад</button><button class="q-btn pri" id="qNext" '+(ans[cQ]===undefined?'disabled':'')+' onclick="nextQ()">'+(cQ===Q.length-1?'Узнать результат':'Далее')+'</button></div>';
+
+  b.querySelectorAll('.q-opt').forEach(el=>el.addEventListener('click',function(){
+    const i=+this.dataset.i;ans[cQ]=i;
+    b.querySelectorAll('.q-opt').forEach(e=>e.classList.remove('sel'));
+    this.classList.add('sel');
+    document.getElementById('qNext').disabled=false;
+  }));
+}
+
+function nextQ(){cQ++;renderQ()}
+function prevQ(){cQ--;renderQ()}
+
+function showRes(){
+  sc=ans.reduce((s,a,i)=>s+Q[i].s[a],0);
+  const mx=Q.length*3,p=sc/mx;
+  let t,m;
+  if(p>=.75){t="Профессия тебе отлично подходит!";m="У тебя выраженная склонность к FullStack-разработке. Ты готов к обучению и росту в этой роли. Начинай с pet-проектов и двигайся к первой позиции."}
+  else if(p>=.5){t="Есть хороший потенциал";m="У тебя есть базовые качества для этой роли. Некоторые аспекты стоит прокачать — самостоятельное обучение или системное мышление. Попробуй учебные проекты."}
+  else{t="Стоит попробовать учебные проекты";m="Это не значит, что профессия тебе не подходит — просто пока рано делать выводы. Начни с простого: HTML/CSS-страница, мини-проект на JavaScript."}
+
+  document.getElementById('qProg').innerHTML=Q.map(()=>'<div class="dot done"></div>').join('');
+  document.getElementById('qBody').innerHTML='<div class="q-res"><div class="sc">'+sc+' / '+mx+'</div><h3>'+t+'</h3><p>'+m+'</p><div style="margin-top:18px"><button class="btn btn-fill" onclick="restart()">Пройти ещё раз</button></div></div>';
+}
+
+function restart(){cQ=0;ans=[];renderQ()}
+renderQ();
+</script>
 </body>
 </html>
